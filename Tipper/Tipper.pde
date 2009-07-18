@@ -22,19 +22,13 @@ void setup() {
   x.ledPin = 2;
   y.ledPin = 3;
   z.ledPin = 4;
-
-  // Now calibrate the sensors. If we're flat one will dominate.
-  digitalWrite(x.ledPin, HIGH);
-  digitalWrite(y.ledPin, HIGH);
-  digitalWrite(z.ledPin, HIGH);
-
-  delay(10);
-  sample();
 }
 
 void loop() {
-  sample();
-
+  x.value = analogRead(x.accelPin);
+  y.value = analogRead(y.accelPin);
+  z.value = analogRead(z.accelPin);
+  
   // Compute a parity value so we catch corrupt packets.
   int parity = (x.value + y.value + z.value) % 10;
 
@@ -45,27 +39,4 @@ void loop() {
   Serial.print(z.value, DEC);
   Serial.print(","); 
   Serial.println(parity, DEC);
-/*
-  if (x.abs > y.abs && x.abs > z.abs) {
-    digitalWrite(x.ledPin, HIGH);
-    digitalWrite(y.ledPin, LOW);
-    digitalWrite(z.ledPin, LOW);
-  }
-  if (y.abs > x.abs && y.abs > z.abs) {
-    digitalWrite(x.ledPin, LOW); 
-    digitalWrite(y.ledPin, HIGH); 
-    digitalWrite(z.ledPin, LOW); 
-  }
-  if (z.abs > x.abs && z.abs > y.abs) {
-    digitalWrite(x.ledPin, LOW); 
-    digitalWrite(y.ledPin, LOW); 
-    digitalWrite(z.ledPin, HIGH); 
-  }
-*/
-}
-
-void sample() {
-  x.value = analogRead(x.accelPin);
-  y.value = analogRead(y.accelPin);
-  z.value = analogRead(z.accelPin);
 }
